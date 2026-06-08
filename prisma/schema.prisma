@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  mobile    String   @unique
+  email     String?  @unique
+  password  String?
+  role      Role     @default(TELECALLER)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  assignedLeads Lead[]       @relation("AssignedTo")
+  calls         Call[]
+  followUps     FollowUp[]
+  attendance    Attendance[]
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  TEAM_LEADER
+  CRM
+  TELECALLER
+  SALES_EXEC
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  mobile    String
+  email     String?
+  city      String?
+  project   String?
+  source    String?
+  budget    String?
+  remarks   String?
+  stage     Stage    @default(NEW)
+  userId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  assignedTo User?      @relation("AssignedTo", fields: [userId], references: [id])
+  calls      Call[]
+  followUps  FollowUp[]
+  documents  Document[]
+}
+
+enum Stage {
+  NEW
+  CONTACTED
+  FOLLOWUP
+  SITE_VISIT
+  NEGOTIATION
+  DOCUMENTATION
+  BOOKING
+  CONVERTED
+}
+
+model Call {
+  id        String     @id @default(cuid())
+  leadId    String
+  userId    String
+  status    CallStatus @default(CONNECTED)
+  duration  Int?
+  notes     String?
+  createdAt DateTime   @default(now())
+
+  lead  Lead @relation(fields: [leadId], references: [id])
+  agent User @relation(fields: [userId], references: [id])
+}
+
+enum CallStatus {
+  CONNECTED
+  NOT_CONNECTED
+  BUSY
+  SWITCHED_OFF
+  CALL_BACK
+  INTERESTED
+  NOT_INTERESTED
+  CONVERTED
+}
+
+model FollowUp {
+  id          String   @id @default(cuid())
+  leadId      String
+  userId      String
+  scheduledAt DateTime
+  note        String?
+  done        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  lead  Lead @relation(fields: [leadId], references: [id])
+  agent User @relation(fields: [userId], references: [id])
+}
+
+model Attendance {
+  id        String    @id @default(cuid())
+  userId    String
+  checkIn   DateTime  @default(now())
+  checkOut  DateTime?
+  latitude  Float?
+  longitude Float?
+  date      DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  leadId    String
+  type      String
+  url       String
+  createdAt DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id])
+}
