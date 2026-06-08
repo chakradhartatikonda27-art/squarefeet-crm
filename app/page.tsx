@@ -13,13 +13,11 @@ export default function LoginPage() {
   const roles = ['Admin', 'Team Leader', 'CRM', 'Telecaller', 'Sales Exec'];
 
   const handleSendOtp = () => {
-    if (mobile.length < 10) return;
     setLoading(true);
     setTimeout(() => { setStep('otp'); setLoading(false); }, 1000);
   };
 
   const handleLogin = () => {
-    if (otp.length < 4) return;
     setLoading(true);
     setTimeout(() => {
       if (role === 'Telecaller' || role === 'Sales Exec' || role === 'CRM') {
@@ -100,38 +98,39 @@ export default function LoginPage() {
         </div>
 
         {/* Mobile Input */}
-        <div style={{marginBottom: '12px'}}>
-          <label style={{fontSize: '12px', fontWeight: '600', color: '#6B7AB5',
-                         display: 'block', marginBottom: '6px'}}>
-            Mobile number
-          </label>
-          <input
-            type="tel"
-            placeholder="+91 XXXXX XXXXX"
-            value={mobile}
-            onChange={e => setMobile(e.target.value)}
-            disabled={step === 'otp'}
-            style={{
-              width: '100%', padding: '12px 14px',
-              borderRadius: '12px', fontSize: '15px',
-              border: '1.5px solid #DDE2EF', color: '#1A1A2E',
-              outline: 'none', background: 'white',
-              boxSizing: 'border-box',
-            }}
-          />
-        </div>
+        {step === 'mobile' && (
+          <div style={{marginBottom: '12px'}}>
+            <label style={{fontSize: '12px', fontWeight: '600', color: '#6B7AB5',
+                           display: 'block', marginBottom: '6px'}}>
+              Mobile number
+            </label>
+            <input
+              type="tel"
+              placeholder="+91 XXXXX XXXXX"
+              value={mobile}
+              onChange={e => setMobile(e.target.value)}
+              style={{
+                width: '100%', padding: '12px 14px',
+                borderRadius: '12px', fontSize: '15px',
+                border: '1.5px solid #DDE2EF', color: '#1A1A2E',
+                outline: 'none', background: 'white',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+        )}
 
         {/* OTP Input */}
         {step === 'otp' && (
           <div style={{marginBottom: '12px'}}>
             <label style={{fontSize: '12px', fontWeight: '600', color: '#6B7AB5',
                            display: 'block', marginBottom: '6px'}}>
-              Enter OTP
+              OTP sent to {mobile}
             </label>
             <div style={{display: 'flex', gap: '8px'}}>
               <input
                 type="number"
-                placeholder="Enter OTP"
+                placeholder="Enter 4-digit OTP"
                 value={otp}
                 onChange={e => setOtp(e.target.value)}
                 style={{
@@ -141,14 +140,14 @@ export default function LoginPage() {
                   outline: 'none', background: 'white',
                 }}
               />
-              <button onClick={() => setStep('mobile')}
+              <button onClick={() => { setStep('mobile'); setOtp(''); }}
                 style={{
                   padding: '12px 16px', borderRadius: '12px',
                   border: '1.5px solid #DDE2EF', background: 'white',
                   color: '#6B7AB5', fontSize: '13px', fontWeight: '600',
                   cursor: 'pointer',
                 }}>
-                Resend
+                Change
               </button>
             </div>
           </div>
@@ -156,25 +155,25 @@ export default function LoginPage() {
 
         {/* Button */}
         {step === 'mobile' ? (
-          <button onClick={handleSendOtp}
-            disabled={loading || mobile.length < 10}
+          <button
+            onClick={handleSendOtp}
             style={{
               width: '100%', padding: '14px',
               borderRadius: '14px', fontSize: '16px',
               fontWeight: '700', color: 'white',
-              background: loading || mobile.length < 10 ? '#9AA5CC' : '#1B2F6E',
+              background: '#1B2F6E',
               border: 'none', cursor: 'pointer', marginTop: '8px',
             }}>
             {loading ? 'Sending OTP...' : 'Send OTP →'}
           </button>
         ) : (
-          <button onClick={handleLogin}
-            disabled={loading || otp.length < 4}
+          <button
+            onClick={handleLogin}
             style={{
               width: '100%', padding: '14px',
               borderRadius: '14px', fontSize: '16px',
               fontWeight: '700', color: 'white',
-              background: loading || otp.length < 4 ? '#9AA5CC' : '#3AAA35',
+              background: '#3AAA35',
               border: 'none', cursor: 'pointer', marginTop: '8px',
             }}>
             {loading ? 'Signing in...' : 'Sign in →'}
