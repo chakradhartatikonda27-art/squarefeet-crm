@@ -10,7 +10,7 @@ export default function AdminDashboard() {
     { label: 'Total Leads', value: '142', trend: '+12 this week', color: '#1B2F6E', accent: '#1B2F6E' },
     { label: 'Calls Today', value: '67', trend: '44 connected', color: '#2E9FD4', accent: '#2E9FD4' },
     { label: 'Conversions', value: '7', trend: 'This month', color: '#3AAA35', accent: '#3AAA35' },
-    { label: 'Overdue Alerts', value: '3', trend: 'Needs attention', color: '#E53935', accent: '#E53935' },
+    { label: 'Overdue', value: '3', trend: 'Needs attention', color: '#E53935', accent: '#E53935' },
   ];
 
   const recentLeads = [
@@ -39,300 +39,362 @@ export default function AdminDashboard() {
     { id: 'settings', label: 'Settings', path: '/admin/settings' },
   ];
 
+  const bottomNav = [
+    { id: 'dashboard', label: 'Home', icon: '🏠', path: '/admin/dashboard' },
+    { id: 'leads', label: 'Leads', icon: '👥', path: '/admin/leads' },
+    { id: 'calls', label: 'Calls', icon: '📞', path: '/admin/calls' },
+    { id: 'reports', label: 'Reports', icon: '📊', path: '/admin/reports' },
+    { id: 'team', label: 'Team', icon: '👤', path: '/admin/team' },
+  ];
+
   return (
-    <div className="flex min-h-screen" style={{background: '#F0F2F8'}}>
+    <div style={{minHeight: '100dvh', background: '#F0F2F8'}}>
 
-      {/* Sidebar */}
-      <div className="w-52 flex flex-col flex-shrink-0" style={{background: '#0E1A3D'}}>
-
-        {/* Logo */}
-        <div className="p-4 border-b" style={{borderColor: 'rgba(255,255,255,0.07)', background: '#080F1E'}}>
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{background: 'white'}}>
-              <svg width="22" height="22" viewBox="0 0 40 40" fill="none">
-                <rect x="3" y="22" width="9" height="15" rx="1.5" fill="#1B2F6E"/>
-                <rect x="15" y="14" width="9" height="23" rx="1.5" fill="#2E9FD4"/>
-                <rect x="27" y="5" width="10" height="32" rx="1.5" fill="#3AAA35"/>
-                <path d="M1 24L20 9L39 24" stroke="#1B2F6E" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-              </svg>
-            </div>
-            <div>
-              <div className="text-xs font-bold text-white">Square Feet</div>
-              <div className="text-xs font-semibold" style={{color: '#3AAA35'}}>India CRM</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Nav */}
-        <div className="flex-1 py-2 overflow-y-auto">
-          <div className="px-4 py-2 text-xs font-bold" style={{color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em'}}>
-            MAIN
-          </div>
-          {navItems.slice(0, 4).map(item => (
-            <button key={item.id}
-              onClick={() => { setActiveNav(item.id); router.push(item.path); }}
-              className="w-full flex items-center justify-between px-4 py-2 text-xs font-medium border-l-2 transition-all"
-              style={{
-                background: activeNav === item.id ? 'rgba(58,170,53,0.12)' : 'transparent',
-                color: activeNav === item.id ? 'white' : 'rgba(255,255,255,0.5)',
-                borderLeftColor: activeNav === item.id ? '#3AAA35' : 'transparent',
-              }}>
-              <span>{item.label}</span>
-              {item.badge && (
-                <span className="text-xs font-bold px-2 py-0.5 rounded-full"
-                  style={{background: item.badgeRed ? '#E53935' : '#3AAA35', color: 'white'}}>
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          ))}
-
-          <div className="px-4 py-2 mt-2 text-xs font-bold" style={{color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em'}}>
-            MANAGE
-          </div>
-          {navItems.slice(4).map(item => (
-            <button key={item.id}
-              onClick={() => { setActiveNav(item.id); router.push(item.path); }}
-              className="w-full flex items-center px-4 py-2 text-xs font-medium border-l-2 transition-all"
-              style={{
-                background: activeNav === item.id ? 'rgba(58,170,53,0.12)' : 'transparent',
-                color: activeNav === item.id ? 'white' : 'rgba(255,255,255,0.5)',
-                borderLeftColor: activeNav === item.id ? '#3AAA35' : 'transparent',
-              }}>
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        {/* User */}
-        <div className="p-3 border-t flex items-center gap-2"
-             style={{borderColor: 'rgba(255,255,255,0.07)', background: '#080F1E'}}>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
-               style={{background: '#3AAA35'}}>
-            MR
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-xs font-bold text-white">Mohan R.</div>
-            <div className="text-xs" style={{color: '#3AAA35'}}>Super Admin</div>
-          </div>
-          <button onClick={() => router.push('/')}
-            className="text-xs" style={{color: 'rgba(255,255,255,0.3)'}}>
-            Exit
-          </button>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
-
-        {/* Top Bar */}
-        <div className="px-6 py-3 flex items-center justify-between border-b"
-             style={{background: 'white', borderColor: '#DDE2EF'}}>
-          <div>
-            <h1 className="text-base font-bold" style={{color: '#1B2F6E'}}>
-              Good morning, Mohan
-            </h1>
-            <p className="text-xs" style={{color: '#6B7AB5'}}>
-              Tuesday, 9 June 2026 · Visakhapatnam
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 rounded-lg text-xs font-semibold border"
-              style={{borderColor: '#DDE2EF', color: '#1B2F6E'}}>
-              🔔 3
-            </button>
-            <button onClick={() => router.push('/admin/leads')}
-              className="px-4 py-1.5 rounded-lg text-xs font-bold text-white"
-              style={{background: '#1B2F6E'}}>
-              + Add Lead
-            </button>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 p-6 overflow-y-auto">
-
-          {/* Stats */}
-          <div className="grid grid-cols-4 gap-3 mb-5">
-            {stats.map((stat, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 relative overflow-hidden"
-                   style={{border: '0.5px solid #DDE2EF'}}>
-                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl"
-                     style={{background: stat.accent}}/>
-                <div className="text-2xl font-extrabold mt-1" style={{color: stat.color}}>
-                  {stat.value}
+      {/* ── DESKTOP SIDEBAR (hidden on mobile) ── */}
+      <div style={{display: 'flex', minHeight: '100dvh'}}>
+        <div className="desktop-sidebar" style={{
+          width: '210px', background: '#0E1A3D',
+          display: 'flex', flexDirection: 'column', flexShrink: 0,
+        }}>
+          {/* Logo */}
+          <div style={{padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.07)',
+                       background: '#080F1E'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+              <div style={{width: '36px', height: '36px', borderRadius: '8px',
+                           background: 'white', display: 'flex', alignItems: 'center',
+                           justifyContent: 'center', flexShrink: 0}}>
+                <svg width="22" height="22" viewBox="0 0 40 40" fill="none">
+                  <rect x="3" y="22" width="9" height="15" rx="1.5" fill="#1B2F6E"/>
+                  <rect x="15" y="14" width="9" height="23" rx="1.5" fill="#2E9FD4"/>
+                  <rect x="27" y="5" width="10" height="32" rx="1.5" fill="#3AAA35"/>
+                  <path d="M1 24L20 9L39 24" stroke="#1B2F6E" strokeWidth="2.5"
+                        fill="none" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{fontSize: '12px', fontWeight: '800', color: 'white'}}>
+                  Square Feet
                 </div>
-                <div className="text-xs font-medium mt-1" style={{color: '#6B7AB5'}}>
-                  {stat.label}
-                </div>
-                <div className="text-xs font-semibold mt-1" style={{color: stat.color}}>
-                  {stat.trend}
+                <div style={{fontSize: '11px', fontWeight: '600', color: '#3AAA35'}}>
+                  India CRM
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Nav */}
+          <div style={{flex: 1, paddingTop: '8px', overflowY: 'auto'}}>
+            <div style={{padding: '10px 16px 4px', fontSize: '10px', fontWeight: '700',
+                         color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em'}}>
+              MAIN
+            </div>
+            {navItems.slice(0, 4).map(item => (
+              <button key={item.id}
+                onClick={() => { setActiveNav(item.id); router.push(item.path); }}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center',
+                  justifyContent: 'space-between', padding: '9px 16px',
+                  fontSize: '12px', fontWeight: '500', border: 'none',
+                  borderLeft: `2px solid ${activeNav === item.id ? '#3AAA35' : 'transparent'}`,
+                  background: activeNav === item.id ? 'rgba(58,170,53,0.12)' : 'transparent',
+                  color: activeNav === item.id ? 'white' : 'rgba(255,255,255,0.5)',
+                  cursor: 'pointer', textAlign: 'left',
+                }}>
+                <span>{item.label}</span>
+                {item.badge && (
+                  <span style={{
+                    fontSize: '10px', fontWeight: '700', padding: '2px 6px',
+                    borderRadius: '10px', color: 'white',
+                    background: item.badgeRed ? '#E53935' : '#3AAA35',
+                  }}>
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            ))}
+            <div style={{padding: '10px 16px 4px', fontSize: '10px', fontWeight: '700',
+                         color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em', marginTop: '8px'}}>
+              MANAGE
+            </div>
+            {navItems.slice(4).map(item => (
+              <button key={item.id}
+                onClick={() => { setActiveNav(item.id); router.push(item.path); }}
+                style={{
+                  width: '100%', padding: '9px 16px', fontSize: '12px',
+                  fontWeight: '500', border: 'none', textAlign: 'left',
+                  borderLeft: `2px solid ${activeNav === item.id ? '#3AAA35' : 'transparent'}`,
+                  background: activeNav === item.id ? 'rgba(58,170,53,0.12)' : 'transparent',
+                  color: activeNav === item.id ? 'white' : 'rgba(255,255,255,0.5)',
+                  cursor: 'pointer',
+                }}>
+                {item.label}
+              </button>
             ))}
           </div>
 
-          {/* Two Column */}
-          <div className="grid grid-cols-5 gap-4">
+          {/* User */}
+          <div style={{padding: '12px', borderTop: '1px solid rgba(255,255,255,0.07)',
+                       background: '#080F1E', display: 'flex', alignItems: 'center', gap: '8px'}}>
+            <div style={{width: '30px', height: '30px', borderRadius: '50%',
+                         background: '#3AAA35', display: 'flex', alignItems: 'center',
+                         justifyContent: 'center', fontSize: '11px', fontWeight: '700',
+                         color: 'white', flexShrink: 0}}>
+              MR
+            </div>
+            <div style={{flex: 1}}>
+              <div style={{fontSize: '12px', fontWeight: '700', color: 'white'}}>Mohan R.</div>
+              <div style={{fontSize: '10px', color: '#3AAA35'}}>Super Admin</div>
+            </div>
+            <button onClick={() => router.push('/')}
+              style={{fontSize: '11px', color: 'rgba(255,255,255,0.3)',
+                      background: 'none', border: 'none', cursor: 'pointer'}}>
+              Exit
+            </button>
+          </div>
+        </div>
 
-            {/* Left — Recent Leads + Hourly Report */}
-            <div className="col-span-3 flex flex-col gap-4">
-              <div className="bg-white rounded-xl overflow-hidden"
-                   style={{border: '0.5px solid #DDE2EF'}}>
-                <div className="px-4 py-3 flex items-center justify-between border-b"
-                     style={{borderColor: '#DDE2EF'}}>
-                  <div>
-                    <div className="text-sm font-bold" style={{color: '#1B2F6E'}}>Recent Leads</div>
-                    <div className="text-xs" style={{color: '#6B7AB5'}}>Last 24 hours</div>
+        {/* ── MAIN CONTENT ── */}
+        <div style={{flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0}}>
+
+          {/* Top Bar */}
+          <div style={{padding: '12px 16px', background: 'white',
+                       borderBottom: '1px solid #DDE2EF',
+                       display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+            <div>
+              <div style={{fontSize: '15px', fontWeight: '800', color: '#1B2F6E'}}>
+                Good morning, Mohan
+              </div>
+              <div style={{fontSize: '11px', color: '#6B7AB5'}}>
+                Tuesday, 9 June 2026 · Visakhapatnam
+              </div>
+            </div>
+            <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+              <button style={{padding: '7px 12px', borderRadius: '8px', fontSize: '12px',
+                              fontWeight: '600', border: '1px solid #DDE2EF',
+                              background: 'white', color: '#1B2F6E', cursor: 'pointer'}}>
+                🔔 3
+              </button>
+              <button onClick={() => router.push('/admin/leads')}
+                style={{padding: '7px 14px', borderRadius: '8px', fontSize: '12px',
+                        fontWeight: '700', color: 'white', background: '#1B2F6E',
+                        border: 'none', cursor: 'pointer'}}>
+                + Add Lead
+              </button>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div style={{flex: 1, padding: '14px', overflowY: 'auto'}}>
+
+            {/* Stats Grid */}
+            <div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
+                         gap: '10px', marginBottom: '14px'}}>
+              {stats.map((stat, i) => (
+                <div key={i} style={{background: 'white', borderRadius: '12px',
+                                     padding: '14px', border: '0.5px solid #DDE2EF',
+                                     position: 'relative', overflow: 'hidden'}}>
+                  <div style={{position: 'absolute', top: 0, left: 0, right: 0,
+                               height: '3px', background: stat.accent}}/>
+                  <div style={{fontSize: '24px', fontWeight: '800',
+                               color: stat.color, marginTop: '4px'}}>
+                    {stat.value}
                   </div>
-                  <button onClick={() => router.push('/admin/leads')}
-                    className="text-xs font-semibold" style={{color: '#2E9FD4'}}>
-                    View all →
+                  <div style={{fontSize: '11px', fontWeight: '500',
+                               color: '#6B7AB5', marginTop: '2px'}}>
+                    {stat.label}
+                  </div>
+                  <div style={{fontSize: '11px', fontWeight: '600',
+                               color: stat.color, marginTop: '2px'}}>
+                    {stat.trend}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Recent Leads */}
+            <div style={{background: 'white', borderRadius: '12px',
+                         border: '0.5px solid #DDE2EF', marginBottom: '12px',
+                         overflow: 'hidden'}}>
+              <div style={{padding: '12px 14px', borderBottom: '1px solid #DDE2EF',
+                           display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>
+                  Recent Leads
+                </div>
+                <button onClick={() => router.push('/admin/leads')}
+                  style={{fontSize: '12px', fontWeight: '600', color: '#2E9FD4',
+                          background: 'none', border: 'none', cursor: 'pointer'}}>
+                  View all →
+                </button>
+              </div>
+              {recentLeads.map((lead, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '10px 14px', borderBottom: '1px solid #DDE2EF',
+                  background: i % 2 === 0 ? '#F7F8FC' : 'white',
+                }}>
+                  <div style={{
+                    width: '34px', height: '34px', borderRadius: '50%',
+                    background: '#1B2F6E', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', fontSize: '11px', fontWeight: '700',
+                    color: 'white', flexShrink: 0,
+                  }}>
+                    {lead.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div style={{flex: 1, minWidth: 0}}>
+                    <div style={{fontSize: '13px', fontWeight: '600', color: '#1A1A2E'}}>
+                      {lead.name}
+                    </div>
+                    <div style={{fontSize: '11px', color: '#6B7AB5'}}>
+                      {lead.area} · {lead.budget}
+                    </div>
+                  </div>
+                  <span style={{
+                    fontSize: '10px', fontWeight: '600', padding: '3px 8px',
+                    borderRadius: '6px', background: lead.sbg, color: lead.sfg,
+                    flexShrink: 0,
+                  }}>
+                    {lead.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Hourly Report */}
+            <div style={{background: 'white', borderRadius: '12px',
+                         border: '0.5px solid #DDE2EF', marginBottom: '12px',
+                         overflow: 'hidden'}}>
+              <div style={{padding: '12px 14px', borderBottom: '1px solid #DDE2EF',
+                           display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <div>
+                  <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>
+                    Last Hourly Report
+                  </div>
+                  <div style={{fontSize: '11px', color: '#6B7AB5'}}>
+                    Auto-generated at 3:00 PM
+                  </div>
+                </div>
+                <div style={{display: 'flex', gap: '6px'}}>
+                  <button style={{padding: '5px 10px', borderRadius: '6px', fontSize: '11px',
+                                  fontWeight: '600', border: '1px solid #DDE2EF',
+                                  background: 'white', color: '#1B2F6E', cursor: 'pointer'}}>
+                    Excel
+                  </button>
+                  <button style={{padding: '5px 10px', borderRadius: '6px', fontSize: '11px',
+                                  fontWeight: '700', color: 'white', background: '#1B2F6E',
+                                  border: 'none', cursor: 'pointer'}}>
+                    PDF
                   </button>
                 </div>
-                {recentLeads.map((lead, i) => (
-                  <div key={i} className="flex items-center gap-3 px-4 py-2.5 border-b last:border-0"
-                       style={{borderColor: '#DDE2EF', background: i%2===0 ? '#F7F8FC' : 'white'}}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                         style={{background: '#1B2F6E'}}>
-                      {lead.name.split(' ').map(n=>n[0]).join('')}
+              </div>
+              <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+                           gap: '8px', padding: '12px'}}>
+                {[
+                  {val:'14',lbl:'Calls',c:'#1B2F6E'},
+                  {val:'9',lbl:'Connected',c:'#3AAA35'},
+                  {val:'3',lbl:'Follow-ups',c:'#2E9FD4'},
+                  {val:'2',lbl:'New Leads',c:'#2E9FD4'},
+                  {val:'1',lbl:'Converted',c:'#3AAA35'},
+                  {val:'86%',lbl:'Productivity',c:'#3AAA35'},
+                ].map((item, i) => (
+                  <div key={i} style={{background: '#F7F8FC', borderRadius: '8px',
+                                       padding: '10px', textAlign: 'center'}}>
+                    <div style={{fontSize: '18px', fontWeight: '800', color: item.c}}>
+                      {item.val}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold" style={{color: '#1A1A2E'}}>
-                        {lead.name}
-                      </div>
-                      <div className="text-xs" style={{color: '#6B7AB5'}}>
-                        {lead.area} · {lead.budget}
-                      </div>
+                    <div style={{fontSize: '10px', color: '#9AA5CC', marginTop: '2px'}}>
+                      {item.lbl}
                     </div>
-                    <span className="text-xs font-semibold px-2 py-1 rounded-md"
-                      style={{background: lead.sbg, color: lead.sfg}}>
-                      {lead.status}
-                    </span>
-                    <button onClick={() => router.push('/admin/calls')}
-                      className="text-xs font-semibold px-3 py-1 rounded-lg"
-                      style={{background: '#E8F5E8', color: '#2D8529', border: '1px solid #3AAA35'}}>
-                      Call
-                    </button>
                   </div>
                 ))}
               </div>
-
-              {/* Hourly Report */}
-              <div className="bg-white rounded-xl overflow-hidden"
-                   style={{border: '0.5px solid #DDE2EF'}}>
-                <div className="px-4 py-3 flex items-center justify-between border-b"
-                     style={{borderColor: '#DDE2EF'}}>
-                  <div>
-                    <div className="text-sm font-bold" style={{color: '#1B2F6E'}}>
-                      Last Hourly Report
-                    </div>
-                    <div className="text-xs" style={{color: '#6B7AB5'}}>
-                      Auto-generated at 3:00 PM
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button className="text-xs font-semibold px-3 py-1 rounded-lg border"
-                      style={{borderColor: '#DDE2EF', color: '#1B2F6E'}}>
-                      Excel
-                    </button>
-                    <button className="text-xs font-semibold px-3 py-1 rounded-lg text-white"
-                      style={{background: '#1B2F6E'}}>
-                      PDF
-                    </button>
-                  </div>
-                </div>
-                <div className="grid grid-cols-6 gap-2 p-4">
-                  {[
-                    {val:'14',lbl:'Calls',c:'#1B2F6E'},
-                    {val:'9',lbl:'Connected',c:'#3AAA35'},
-                    {val:'3',lbl:'Follow-ups',c:'#2E9FD4'},
-                    {val:'2',lbl:'New Leads',c:'#2E9FD4'},
-                    {val:'1',lbl:'Converted',c:'#3AAA35'},
-                    {val:'86%',lbl:'Productivity',c:'#3AAA35'},
-                  ].map((item,i) => (
-                    <div key={i} className="rounded-lg p-2 text-center"
-                         style={{background: '#F7F8FC'}}>
-                      <div className="text-base font-extrabold" style={{color: item.c}}>
-                        {item.val}
-                      </div>
-                      <div className="text-xs mt-0.5" style={{color: '#9AA5CC'}}>
-                        {item.lbl}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
-            {/* Right — Team + Quick Actions */}
-            <div className="col-span-2 flex flex-col gap-4">
-              <div className="bg-white rounded-xl overflow-hidden"
-                   style={{border: '0.5px solid #DDE2EF'}}>
-                <div className="px-4 py-3 flex items-center justify-between border-b"
-                     style={{borderColor: '#DDE2EF'}}>
-                  <div className="text-sm font-bold" style={{color: '#1B2F6E'}}>
-                    Team Performance
-                  </div>
-                  <button onClick={() => router.push('/admin/team')}
-                    className="text-xs font-semibold" style={{color: '#2E9FD4'}}>
-                    Details →
-                  </button>
+            {/* Team Performance */}
+            <div style={{background: 'white', borderRadius: '12px',
+                         border: '0.5px solid #DDE2EF', marginBottom: '70px',
+                         overflow: 'hidden'}}>
+              <div style={{padding: '12px 14px', borderBottom: '1px solid #DDE2EF',
+                           display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>
+                  Team Performance
                 </div>
-                {team.map((member, i) => (
-                  <div key={i} className="flex items-center gap-2 px-4 py-2.5 border-b last:border-0"
-                       style={{borderColor: '#DDE2EF'}}>
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                         style={{background: '#1B2F6E'}}>
-                      {member.name.split(' ').map(n=>n[0]).join('')}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-semibold" style={{color: '#1A1A2E'}}>
-                        {member.name}
-                      </div>
-                      <div className="text-xs" style={{color: '#9AA5CC'}}>
-                        {member.calls} calls today
-                      </div>
-                      <div className="h-1 rounded-full mt-1" style={{background: '#DDE2EF'}}>
-                        <div className="h-1 rounded-full"
-                          style={{width: `${member.score}%`, background: member.color}}/>
-                      </div>
-                    </div>
-                    <span className="text-xs font-bold" style={{color: member.color}}>
-                      {member.score}%
-                    </span>
-                  </div>
-                ))}
+                <button onClick={() => router.push('/admin/team')}
+                  style={{fontSize: '12px', fontWeight: '600', color: '#2E9FD4',
+                          background: 'none', border: 'none', cursor: 'pointer'}}>
+                  Details →
+                </button>
               </div>
-
-              {/* Quick Actions */}
-              <div className="bg-white rounded-xl overflow-hidden"
-                   style={{border: '0.5px solid #DDE2EF'}}>
-                <div className="px-4 py-3 border-b" style={{borderColor: '#DDE2EF'}}>
-                  <div className="text-sm font-bold" style={{color: '#1B2F6E'}}>
-                    Quick Actions
+              {team.map((member, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '10px 14px', borderBottom: '1px solid #DDE2EF',
+                }}>
+                  <div style={{
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    background: '#1B2F6E', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', fontSize: '11px', fontWeight: '700',
+                    color: 'white', flexShrink: 0,
+                  }}>
+                    {member.name.split(' ').map(n => n[0]).join('')}
                   </div>
+                  <div style={{flex: 1, minWidth: 0}}>
+                    <div style={{fontSize: '13px', fontWeight: '600', color: '#1A1A2E'}}>
+                      {member.name}
+                    </div>
+                    <div style={{fontSize: '11px', color: '#9AA5CC'}}>
+                      {member.calls} calls today
+                    </div>
+                    <div style={{height: '4px', background: '#DDE2EF',
+                                 borderRadius: '2px', marginTop: '4px'}}>
+                      <div style={{height: '4px', borderRadius: '2px',
+                                   width: `${member.score}%`, background: member.color}}/>
+                    </div>
+                  </div>
+                  <span style={{fontSize: '13px', fontWeight: '800',
+                                color: member.color, minWidth: '36px', textAlign: 'right'}}>
+                    {member.score}%
+                  </span>
                 </div>
-                <div className="p-3 flex flex-col gap-2">
-                  {[
-                    {label: '+ Add Team Member', path: '/admin/settings', bg: '#1B2F6E', fg: 'white'},
-                    {label: '▶ Play Call Recordings', path: '/admin/calls', bg: '#3AAA35', fg: 'white'},
-                    {label: '📍 View Team on GPS', path: '/admin/team', bg: '#F7F8FC', fg: '#1B2F6E'},
-                    {label: '📥 Download Report', path: '/admin/reports', bg: '#F7F8FC', fg: '#1B2F6E'},
-                  ].map((action, i) => (
-                    <button key={i}
-                      onClick={() => router.push(action.path)}
-                      className="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold border transition-all"
-                      style={{background: action.bg, color: action.fg, borderColor: '#DDE2EF'}}>
-                      {action.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
+
           </div>
         </div>
       </div>
+
+      {/* ── MOBILE BOTTOM NAV ── */}
+      <div className="mobile-bottom-nav" style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0,
+        display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)',
+        background: 'white', borderTop: '1px solid #DDE2EF',
+        zIndex: 100,
+      }}>
+        {bottomNav.map((item) => (
+          <button key={item.id}
+            onClick={() => { setActiveNav(item.id); router.push(item.path); }}
+            style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              padding: '10px 4px', gap: '3px', fontSize: '10px', fontWeight: '600',
+              color: activeNav === item.id ? '#1B2F6E' : '#9AA5CC',
+              background: 'none', border: 'none', cursor: 'pointer',
+            }}>
+            <span style={{fontSize: '20px'}}>{item.icon}</span>
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      <style>{`
+        @media (min-width: 768px) {
+          .mobile-bottom-nav { display: none !important; }
+          .desktop-sidebar { display: flex !important; }
+        }
+        @media (max-width: 767px) {
+          .desktop-sidebar { display: none !important; }
+          .mobile-bottom-nav { display: grid !important; }
+        }
+      `}</style>
+
     </div>
   );
 }
