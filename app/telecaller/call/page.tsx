@@ -35,7 +35,7 @@ export default function CallScreen() {
     'Pick a time',
   ];
 
-  const handleStatusSelect = (key) => {
+  const handleStatusSelect = (key: string) => {
     setSelectedStatus(key);
     if (key === 'INTERESTED' || key === 'BUSY' || key === 'CONNECTED') {
       setShowFollowup(true);
