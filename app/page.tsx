@@ -20,8 +20,14 @@ export default function LoginPage() {
   const handleLogin = () => {
     setLoading(true);
     setTimeout(() => {
-      if (role === 'Telecaller' || role === 'Sales Exec' || role === 'CRM') {
+      if (role === 'Telecaller') {
         router.push('/telecaller/home');
+      } else if (role === 'Sales Exec') {
+        router.push('/sales/home');
+      } else if (role === 'CRM') {
+        router.push('/crm/home');
+      } else if (role === 'Team Leader') {
+        router.push('/teamleader/dashboard');
       } else {
         router.push('/admin/dashboard');
       }
@@ -30,30 +36,17 @@ export default function LoginPage() {
 
   return (
     <div style={{
-      minHeight: '100dvh',
-      width: '100%',
-      background: '#1B2F6E',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px 16px',
+      minHeight: '100dvh', width: '100%', background: '#1B2F6E',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', padding: '24px 16px',
     }}>
-      <div style={{
-        background: 'white',
-        borderRadius: '24px',
-        padding: '32px 24px',
-        width: '100%',
-        maxWidth: '400px',
-      }}>
+      <div style={{background: 'white', borderRadius: '24px', padding: '32px 24px',
+                   width: '100%', maxWidth: '400px'}}>
 
-        {/* Logo */}
         <div style={{textAlign: 'center', marginBottom: '24px'}}>
-          <div style={{
-            width: '72px', height: '72px', borderRadius: '16px',
-            background: '#E8EBF5', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', margin: '0 auto 12px',
-          }}>
+          <div style={{width: '72px', height: '72px', borderRadius: '16px', background: '#E8EBF5',
+                       display: 'flex', alignItems: 'center', justifyContent: 'center',
+                       margin: '0 auto 12px'}}>
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <rect x="3" y="22" width="9" height="15" rx="1.5" fill="#1B2F6E"/>
               <rect x="15" y="14" width="9" height="23" rx="1.5" fill="#2E9FD4"/>
@@ -73,7 +66,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Role Selector */}
         <div style={{marginBottom: '16px'}}>
           <p style={{fontSize: '12px', fontWeight: '600', color: '#6B7AB5', marginBottom: '8px'}}>
             Sign in as
@@ -81,46 +73,31 @@ export default function LoginPage() {
           <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px'}}>
             {roles.map(r => (
               <button key={r} onClick={() => setRole(r)}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  border: `1.5px solid ${role === r ? '#1B2F6E' : '#DDE2EF'}`,
-                  background: role === r ? '#E8EBF5' : 'white',
-                  color: role === r ? '#1B2F6E' : '#9AA5CC',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                }}>
+                style={{padding: '6px 14px', borderRadius: '20px',
+                        border: `1.5px solid ${role === r ? '#1B2F6E' : '#DDE2EF'}`,
+                        background: role === r ? '#E8EBF5' : 'white',
+                        color: role === r ? '#1B2F6E' : '#9AA5CC',
+                        fontSize: '13px', fontWeight: '600', cursor: 'pointer'}}>
                 {r}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Mobile Input */}
         {step === 'mobile' && (
           <div style={{marginBottom: '12px'}}>
             <label style={{fontSize: '12px', fontWeight: '600', color: '#6B7AB5',
                            display: 'block', marginBottom: '6px'}}>
               Mobile number
             </label>
-            <input
-              type="tel"
-              placeholder="+91 XXXXX XXXXX"
-              value={mobile}
+            <input type="tel" placeholder="+91 XXXXX XXXXX" value={mobile}
               onChange={e => setMobile(e.target.value)}
-              style={{
-                width: '100%', padding: '12px 14px',
-                borderRadius: '12px', fontSize: '15px',
-                border: '1.5px solid #DDE2EF', color: '#1A1A2E',
-                outline: 'none', background: 'white',
-                boxSizing: 'border-box',
-              }}
-            />
+              style={{width: '100%', padding: '12px 14px', borderRadius: '12px',
+                      fontSize: '15px', border: '1.5px solid #DDE2EF', color: '#1A1A2E',
+                      outline: 'none', background: 'white', boxSizing: 'border-box'}}/>
           </div>
         )}
 
-        {/* OTP Input */}
         {step === 'otp' && (
           <div style={{marginBottom: '12px'}}>
             <label style={{fontSize: '12px', fontWeight: '600', color: '#6B7AB5',
@@ -128,60 +105,38 @@ export default function LoginPage() {
               OTP sent to {mobile}
             </label>
             <div style={{display: 'flex', gap: '8px'}}>
-              <input
-                type="number"
-                placeholder="Enter 4-digit OTP"
-                value={otp}
+              <input type="number" placeholder="Enter 4-digit OTP" value={otp}
                 onChange={e => setOtp(e.target.value)}
-                style={{
-                  flex: 1, padding: '12px 14px',
-                  borderRadius: '12px', fontSize: '15px',
-                  border: '1.5px solid #DDE2EF', color: '#1A1A2E',
-                  outline: 'none', background: 'white',
-                }}
-              />
+                style={{flex: 1, padding: '12px 14px', borderRadius: '12px', fontSize: '15px',
+                        border: '1.5px solid #DDE2EF', color: '#1A1A2E',
+                        outline: 'none', background: 'white'}}/>
               <button onClick={() => { setStep('mobile'); setOtp(''); }}
-                style={{
-                  padding: '12px 16px', borderRadius: '12px',
-                  border: '1.5px solid #DDE2EF', background: 'white',
-                  color: '#6B7AB5', fontSize: '13px', fontWeight: '600',
-                  cursor: 'pointer',
-                }}>
+                style={{padding: '12px 16px', borderRadius: '12px',
+                        border: '1.5px solid #DDE2EF', background: 'white',
+                        color: '#6B7AB5', fontSize: '13px', fontWeight: '600', cursor: 'pointer'}}>
                 Change
               </button>
             </div>
           </div>
         )}
 
-        {/* Button */}
         {step === 'mobile' ? (
-          <button
-            onClick={handleSendOtp}
-            style={{
-              width: '100%', padding: '14px',
-              borderRadius: '14px', fontSize: '16px',
-              fontWeight: '700', color: 'white',
-              background: '#1B2F6E',
-              border: 'none', cursor: 'pointer', marginTop: '8px',
-            }}>
+          <button onClick={handleSendOtp}
+            style={{width: '100%', padding: '14px', borderRadius: '14px', fontSize: '16px',
+                    fontWeight: '700', color: 'white', background: '#1B2F6E',
+                    border: 'none', cursor: 'pointer', marginTop: '8px'}}>
             {loading ? 'Sending OTP...' : 'Send OTP →'}
           </button>
         ) : (
-          <button
-            onClick={handleLogin}
-            style={{
-              width: '100%', padding: '14px',
-              borderRadius: '14px', fontSize: '16px',
-              fontWeight: '700', color: 'white',
-              background: '#3AAA35',
-              border: 'none', cursor: 'pointer', marginTop: '8px',
-            }}>
+          <button onClick={handleLogin}
+            style={{width: '100%', padding: '14px', borderRadius: '14px', fontSize: '16px',
+                    fontWeight: '700', color: 'white', background: '#3AAA35',
+                    border: 'none', cursor: 'pointer', marginTop: '8px'}}>
             {loading ? 'Signing in...' : 'Sign in →'}
           </button>
         )}
 
-        <p style={{textAlign: 'center', fontSize: '12px',
-                   color: '#9AA5CC', marginTop: '16px'}}>
+        <p style={{textAlign: 'center', fontSize: '12px', color: '#9AA5CC', marginTop: '16px'}}>
           Square Feet India CRM · Visakhapatnam
         </p>
       </div>
