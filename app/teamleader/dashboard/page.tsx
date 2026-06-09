@@ -79,28 +79,25 @@ export default function TeamLeaderDashboard() {
       <div style={{flex: 1, padding: '14px', overflowY: 'auto', paddingBottom: '80px'}}>
 
         {/* Alerts */}
-        {alerts.length > 0 && (
-          <div style={{background: 'white', borderRadius: '14px', overflow: 'hidden',
-                       border: '0.5px solid #DDE2EF', marginBottom: '12px'}}>
-            <div style={{padding: '12px 14px', borderBottom: '1px solid #DDE2EF',
-                         background: '#FFEBEE'}}>
-              <div style={{fontSize: '13px', fontWeight: '700', color: '#E53935'}}>
-                ⚠️ Team Alerts — {alerts.length} issues
+        <div style={{background: 'white', borderRadius: '14px', overflow: 'hidden',
+                     border: '0.5px solid #DDE2EF', marginBottom: '12px'}}>
+          <div style={{padding: '12px 14px', borderBottom: '1px solid #DDE2EF', background: '#FFEBEE'}}>
+            <div style={{fontSize: '13px', fontWeight: '700', color: '#E53935'}}>
+              ⚠️ Team Alerts — {alerts.length} issues
+            </div>
+          </div>
+          {alerts.map((alert, i) => (
+            <div key={i} style={{display: 'flex', alignItems: 'center', gap: '10px',
+                                 padding: '10px 14px', borderBottom: '1px solid #DDE2EF',
+                                 background: alert.bg}}>
+              <div style={{width: '8px', height: '8px', borderRadius: '50%',
+                           background: alert.color, flexShrink: 0}}/>
+              <div style={{flex: 1, fontSize: '12px', color: '#1B2F6E', fontWeight: '600'}}>
+                {alert.text}
               </div>
             </div>
-            {alerts.map((alert, i) => (
-              <div key={i} style={{display: 'flex', alignItems: 'center', gap: '10px',
-                                   padding: '10px 14px', borderBottom: '1px solid #DDE2EF',
-                                   background: alert.bg}}>
-                <div style={{width: '8px', height: '8px', borderRadius: '50%',
-                             background: alert.color, flexShrink: 0}}/>
-                <div style={{flex: 1, fontSize: '12px', color: '#1B2F6E', fontWeight: '600'}}>
-                  {alert.text}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+          ))}
+        </div>
 
         {/* Team Performance */}
         <div style={{background: 'white', borderRadius: '14px', overflow: 'hidden',
@@ -110,22 +107,24 @@ export default function TeamLeaderDashboard() {
             <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>
               Team Performance Today
             </div>
+            <button onClick={() => router.push('/teamleader/team')}
+              style={{fontSize: '12px', fontWeight: '600', color: '#2E9FD4',
+                      background: 'none', border: 'none', cursor: 'pointer'}}>
+              Details →
+            </button>
           </div>
           {team.map((member, i) => (
             <div key={i} style={{display: 'flex', alignItems: 'center', gap: '10px',
                                  padding: '12px 14px', borderBottom: '1px solid #DDE2EF',
                                  background: i % 2 === 0 ? '#F7F8FC' : 'white'}}>
-              <div style={{width: '36px', height: '36px', borderRadius: '50%',
-                           background: '#1B2F6E', display: 'flex', alignItems: 'center',
-                           justifyContent: 'center', fontSize: '11px', fontWeight: '700',
-                           color: 'white', flexShrink: 0}}>
+              <div style={{width: '36px', height: '36px', borderRadius: '50%', background: '#1B2F6E',
+                           display: 'flex', alignItems: 'center', justifyContent: 'center',
+                           fontSize: '11px', fontWeight: '700', color: 'white', flexShrink: 0}}>
                 {member.initials}
               </div>
               <div style={{flex: 1, minWidth: 0}}>
                 <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}>
-                  <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>
-                    {member.name}
-                  </div>
+                  <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>{member.name}</div>
                   {member.overdue > 0 && (
                     <span style={{fontSize: '9px', fontWeight: '700', padding: '1px 5px',
                                   borderRadius: '8px', background: '#FFEBEE', color: '#E53935'}}>
@@ -143,8 +142,7 @@ export default function TeamLeaderDashboard() {
                 <span style={{fontSize: '13px', fontWeight: '800', color: member.color}}>
                   {member.score}%
                 </span>
-                <span style={{fontSize: '9px', fontWeight: '600', padding: '2px 6px',
-                              borderRadius: '5px',
+                <span style={{fontSize: '9px', fontWeight: '600', padding: '2px 6px', borderRadius: '5px',
                               background: member.status === 'Active' ? '#E8F5E8' :
                                          member.status === 'Field' ? '#E3F4FB' : '#FFEBEE',
                               color: member.status === 'Active' ? '#2D8529' :
@@ -163,19 +161,24 @@ export default function TeamLeaderDashboard() {
             <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>Quick Actions</div>
           </div>
           <div style={{padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px'}}>
-            {[
-              {label: '🔄 Reassign a lead', color: '#1B2F6E', bg: '#E8EBF5'},
-              {label: '📊 View team reports', color: '#2E9FD4', bg: '#E3F4FB'},
-              {label: '📅 Check follow-ups', color: '#E53935', bg: '#FFEBEE'},
-            ].map((action, i) => (
-              <button key={i}
-                style={{width: '100%', padding: '12px 14px', borderRadius: '10px',
-                        border: 'none', background: action.bg, color: action.color,
-                        fontSize: '13px', fontWeight: '700', cursor: 'pointer',
-                        textAlign: 'left'}}>
-                {action.label}
-              </button>
-            ))}
+            <button onClick={() => router.push('/teamleader/leads')}
+              style={{width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
+                      background: '#E8EBF5', color: '#1B2F6E', fontSize: '13px',
+                      fontWeight: '700', cursor: 'pointer', textAlign: 'left'}}>
+              🔄 Reassign a Lead
+            </button>
+            <button onClick={() => router.push('/teamleader/team')}
+              style={{width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
+                      background: '#E3F4FB', color: '#1565C0', fontSize: '13px',
+                      fontWeight: '700', cursor: 'pointer', textAlign: 'left'}}>
+              👥 View Team Details
+            </button>
+            <button onClick={() => router.push('/teamleader/leads')}
+              style={{width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
+                      background: '#FFEBEE', color: '#E53935', fontSize: '13px',
+                      fontWeight: '700', cursor: 'pointer', textAlign: 'left'}}>
+              📅 Check Follow-ups
+            </button>
           </div>
         </div>
 
@@ -195,12 +198,10 @@ export default function TeamLeaderDashboard() {
                     padding: '10px 4px', gap: '3px', fontSize: '10px', fontWeight: '600',
                     color: item.active ? '#1B2F6E' : '#9AA5CC',
                     background: 'none', border: 'none', cursor: 'pointer'}}>
-            <span style={{fontSize: '20px'}}>{item.icon}</span>
-            {item.label}
+            <span style={{fontSize: '20px'}}>{item.icon}</span>{item.label}
           </button>
         ))}
       </div>
-
     </div>
   );
 }
