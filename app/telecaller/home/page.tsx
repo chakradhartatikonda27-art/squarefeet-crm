@@ -97,7 +97,7 @@ export default function TelecallerHome() {
         <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
 
           {/* Call a Lead */}
-          <button onClick={() => router.push('/telecaller/call')}
+          <button onClick={() => router.push('/telecaller/leads')}
             style={{width: '100%', background: 'white', borderRadius: '14px', padding: '16px',
                     border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
                     gap: '14px', boxShadow: '0 1px 8px rgba(0,0,0,0.06)'}}>
@@ -139,7 +139,7 @@ export default function TelecallerHome() {
           </button>
 
           {/* My Leads */}
-          <button onClick={() => router.push('/telecaller/call')}
+          <button onClick={() => router.push('/telecaller/leads')}
             style={{width: '100%', background: 'white', borderRadius: '14px', padding: '16px',
                     border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
                     gap: '14px', boxShadow: '0 1px 8px rgba(0,0,0,0.06)'}}>
