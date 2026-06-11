@@ -6,6 +6,7 @@ export default function TelecallerHome() {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const [dismissedAnn, setDismissedAnn] = useState(false);
+  const [checkedIn, setCheckedIn] = useState(true);
 
   return (
     <div style={{minHeight: '100dvh', background: '#F0F2F8', display: 'flex', flexDirection: 'column'}}>
@@ -59,6 +60,32 @@ export default function TelecallerHome() {
 
       <div style={{flex: 1, padding: '14px', overflowY: 'auto', paddingBottom: '80px'}}>
 
+        {/* Check In/Out Status Bar */}
+        <div onClick={() => router.push('/telecaller/attendance')}
+          style={{background: checkedIn ? '#E8F5E8' : '#FFEBEE', borderRadius: '12px',
+                  padding: '12px 16px', marginBottom: '12px', cursor: 'pointer',
+                  border: `1.5px solid ${checkedIn ? '#3AAA35' : '#E53935'}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <span style={{fontSize: '20px'}}>📍</span>
+            <div>
+              <div style={{fontSize: '13px', fontWeight: '700',
+                           color: checkedIn ? '#2D8529' : '#E53935'}}>
+                {checkedIn ? 'Checked In — 9:14 AM' : 'Not Checked In'}
+              </div>
+              <div style={{fontSize: '11px', color: '#6B7AB5', marginTop: '1px'}}>
+                {checkedIn ? 'Tap to check out' : 'Tap to check in now'}
+              </div>
+            </div>
+          </div>
+          <div style={{background: checkedIn ? '#3AAA35' : '#E53935', borderRadius: '8px',
+                       padding: '6px 14px'}}>
+            <span style={{fontSize: '12px', fontWeight: '800', color: 'white'}}>
+              {checkedIn ? 'IN ✓' : 'OUT'}
+            </span>
+          </div>
+        </div>
+
         {/* Announcement Banner — compact */}
         {!dismissedAnn && (
           <div style={{background: '#E8F5E8', borderRadius: '12px', padding: '10px 14px',
@@ -80,7 +107,7 @@ export default function TelecallerHome() {
           </div>
         )}
 
-        {/* Score Summary — 3 small pills */}
+        {/* Score Pills */}
         <div style={{display: 'flex', gap: '8px', marginBottom: '12px'}}>
           {[
             {icon: '🔴', label: 'Hot', count: 4, color: '#E53935', bg: '#FFEBEE'},
@@ -97,7 +124,7 @@ export default function TelecallerHome() {
           ))}
         </div>
 
-        {/* 4 Big Action Buttons */}
+        {/* 3 Main Action Buttons — removed attendance */}
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
 
           <button onClick={() => router.push('/telecaller/call')}
@@ -111,7 +138,7 @@ export default function TelecallerHome() {
             <div style={{flex: 1, textAlign: 'left'}}>
               <div style={{fontSize: '15px', fontWeight: '800', color: '#2D8529'}}>Call a Lead</div>
               <div style={{fontSize: '12px', color: '#6B7AB5', marginTop: '2px'}}>
-                4 🔴 Hot · 8 🟡 Warm · 12 leads waiting
+                4 🔴 Hot · 8 🟡 Warm · 12 waiting
               </div>
             </div>
             <span style={{fontSize: '20px', color: '#2D8529'}}>→</span>
@@ -127,7 +154,9 @@ export default function TelecallerHome() {
             </div>
             <div style={{flex: 1, textAlign: 'left'}}>
               <div style={{fontSize: '15px', fontWeight: '800', color: '#E53935'}}>Follow-ups Due</div>
-              <div style={{fontSize: '12px', color: '#6B7AB5', marginTop: '2px'}}>3 pending — 1 overdue</div>
+              <div style={{fontSize: '12px', color: '#6B7AB5', marginTop: '2px'}}>
+                3 pending — 1 overdue
+              </div>
             </div>
             <span style={{fontSize: '11px', fontWeight: '800', padding: '4px 10px',
                           borderRadius: '20px', background: '#E53935', color: 'white'}}>3</span>
@@ -149,23 +178,6 @@ export default function TelecallerHome() {
             <span style={{fontSize: '20px', color: '#1B2F6E'}}>→</span>
           </button>
 
-          <button onClick={() => router.push('/telecaller/attendance')}
-            style={{width: '100%', display: 'flex', alignItems: 'center', gap: '14px',
-                    padding: '16px', borderRadius: '16px', border: '2px solid #F57C00',
-                    background: '#FFF3E0', cursor: 'pointer'}}>
-            <div style={{width: '52px', height: '52px', borderRadius: '14px', background: '#F57C00',
-                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
-              <span style={{fontSize: '24px'}}>📍</span>
-            </div>
-            <div style={{flex: 1, textAlign: 'left'}}>
-              <div style={{fontSize: '15px', fontWeight: '800', color: '#F57C00'}}>Check In / Out</div>
-              <div style={{fontSize: '12px', color: '#6B7AB5', marginTop: '2px'}}>
-                Checked in at 9:14 AM today
-              </div>
-            </div>
-            <span style={{fontSize: '11px', fontWeight: '800', padding: '4px 10px',
-                          borderRadius: '20px', background: '#3AAA35', color: 'white'}}>In</span>
-          </button>
         </div>
       </div>
 
