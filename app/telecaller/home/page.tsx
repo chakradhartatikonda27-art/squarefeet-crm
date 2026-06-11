@@ -5,59 +5,38 @@ import { useRouter } from 'next/navigation';
 export default function TelecallerHome() {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
+  const [dismissedAnn, setDismissedAnn] = useState(false);
 
   return (
-    <div style={{minHeight: '100dvh', background: '#F0F2F8', display: 'flex', flexDirection: 'column'}}>
+    <div style={{minHeight: '100dvh', background: '#F0F2F8', display: 'flex',
+                 flexDirection: 'column'}}>
 
-      {/* Header */}
-      <div style={{background: '#1B2F6E', padding: '20px 16px 32px'}}>
-        <div style={{display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-                     marginBottom: '16px'}}>
+      {/* Header — compact */}
+      <div style={{background: '#1B2F6E', padding: '14px 16px 16px', position: 'relative'}}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
           <div>
-            <p style={{fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: '0 0 4px'}}>
-              Tuesday, 9 June 2026
-            </p>
-            <h1 style={{fontSize: '24px', fontWeight: '800', color: 'white', margin: '0 0 8px'}}>
-              Arjun Reddy
-            </h1>
-            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-              <span style={{fontSize: '11px', fontWeight: '700', padding: '3px 10px',
+            <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px'}}>
+              <h1 style={{fontSize: '18px', fontWeight: '800', color: 'white', margin: 0}}>
+                Arjun Reddy
+              </h1>
+              <span style={{fontSize: '10px', fontWeight: '700', padding: '2px 8px',
                             borderRadius: '20px', background: '#3AAA35', color: 'white'}}>
                 Telecaller
               </span>
-              <span style={{fontSize: '11px', fontWeight: '600', padding: '3px 10px',
-                            borderRadius: '20px', background: 'rgba(255,255,255,0.12)',
-                            color: '#3AAA35'}}>
-                📍 Checked In 9:14 AM
-              </span>
+            </div>
+            <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.5)'}}>
+              Tuesday, 9 June 2026 · Visakhapatnam
             </div>
           </div>
           <button onClick={() => setShowMenu(!showMenu)}
-            style={{width: '38px', height: '38px', borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',
-                    color: 'white', fontSize: '18px', cursor: 'pointer',
+            style={{width: '34px', height: '34px', borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.1)', border: 'none',
+                    color: 'white', fontSize: '16px', cursor: 'pointer',
                     display: 'flex', alignItems: 'center', justifyContent: 'center'}}>⋮</button>
         </div>
 
-        {/* Stats inside header */}
-        <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px'}}>
-          {[
-            {val: '18', lbl: 'Calls Today', color: 'white'},
-            {val: '14', lbl: 'Connected', color: '#3AAA35'},
-            {val: '3', lbl: 'Follow-ups', color: '#FF6B6B'},
-          ].map((s, i) => (
-            <div key={i} style={{background: 'rgba(255,255,255,0.08)', borderRadius: '12px',
-                                 padding: '12px', textAlign: 'center'}}>
-              <div style={{fontSize: '24px', fontWeight: '800', color: s.color}}>{s.val}</div>
-              <div style={{fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginTop: '3px'}}>
-                {s.lbl}
-              </div>
-            </div>
-          ))}
-        </div>
-
         {showMenu && (
-          <div style={{position: 'absolute', top: '60px', right: '16px', background: 'white',
+          <div style={{position: 'absolute', top: '52px', right: '16px', background: 'white',
                        borderRadius: '12px', padding: '8px', zIndex: 100, minWidth: '160px',
                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)'}}>
             <button onClick={() => { setShowMenu(false); router.push('/telecaller/attendance'); }}
@@ -73,100 +52,135 @@ export default function TelecallerHome() {
         )}
       </div>
 
-      {/* Main Actions */}
-      <div style={{flex: 1, padding: '16px', marginTop: '-16px', overflowY: 'auto', paddingBottom: '80px'}}>
-
-        {/* Primary Action — Call */}
-        <button onClick={() => router.push('/telecaller/call')}
-          style={{width: '100%', background: 'white', borderRadius: '16px', padding: '20px',
-                  border: 'none', cursor: 'pointer', marginBottom: '10px',
-                  display: 'flex', alignItems: 'center', gap: '16px',
-                  boxShadow: '0 2px 12px rgba(27,47,110,0.08)'}}>
-          <div style={{width: '56px', height: '56px', borderRadius: '16px', background: '#3AAA35',
-                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '26px'}}>📞</span>
-          </div>
-          <div style={{flex: 1, textAlign: 'left'}}>
-            <div style={{fontSize: '16px', fontWeight: '800', color: '#1B2F6E'}}>Call a Lead</div>
-            <div style={{fontSize: '12px', color: '#9AA5CC', marginTop: '3px'}}>
-              12 leads waiting · 4 🔴 Hot · 8 🟡 Warm
+      {/* Stats Row */}
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+                   gap: '8px', padding: '12px 14px', background: '#F0F2F8'}}>
+        {[
+          {val: '18', lbl: 'Calls', color: '#1B2F6E'},
+          {val: '14', lbl: 'Connected', color: '#3AAA35'},
+          {val: '3', lbl: 'Follow-ups', color: '#E53935'},
+          {val: '✓ IN', lbl: '9:14 AM', color: '#3AAA35'},
+        ].map((s, i) => (
+          <div key={i} style={{background: 'white', borderRadius: '10px', padding: '10px 6px',
+                               textAlign: 'center', border: '0.5px solid #DDE2EF'}}>
+            <div style={{fontSize: i === 3 ? '13px' : '20px', fontWeight: '800', color: s.color}}>
+              {s.val}
             </div>
+            <div style={{fontSize: '9px', color: '#9AA5CC', marginTop: '2px'}}>{s.lbl}</div>
           </div>
-          <div style={{width: '32px', height: '32px', borderRadius: '50%',
-                       background: '#3AAA35', display: 'flex', alignItems: 'center',
-                       justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '14px', color: 'white', fontWeight: '800'}}>→</span>
-          </div>
-        </button>
+        ))}
+      </div>
 
-        {/* Follow-ups */}
-        <button onClick={() => router.push('/telecaller/followups')}
-          style={{width: '100%', background: 'white', borderRadius: '16px', padding: '20px',
-                  border: 'none', cursor: 'pointer', marginBottom: '10px',
-                  display: 'flex', alignItems: 'center', gap: '16px',
-                  boxShadow: '0 2px 12px rgba(27,47,110,0.08)'}}>
-          <div style={{width: '56px', height: '56px', borderRadius: '16px', background: '#E53935',
-                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '26px'}}>⏰</span>
-          </div>
-          <div style={{flex: 1, textAlign: 'left'}}>
-            <div style={{fontSize: '16px', fontWeight: '800', color: '#1B2F6E'}}>Follow-ups Due</div>
-            <div style={{fontSize: '12px', color: '#9AA5CC', marginTop: '3px'}}>
-              3 pending · 1 overdue
+      <div style={{flex: 1, padding: '0 14px 14px', overflowY: 'auto', paddingBottom: '80px'}}>
+
+        {/* Announcement */}
+        {!dismissedAnn && (
+          <div style={{background: '#E8F5E8', borderRadius: '12px', padding: '12px 14px',
+                       marginBottom: '10px', border: '1.5px solid #3AAA35',
+                       display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <span style={{fontSize: '18px', flexShrink: 0}}>🚀</span>
+            <div style={{flex: 1, minWidth: 0}}>
+              <div style={{fontSize: '12px', fontWeight: '700', color: '#2D8529'}}>
+                New Launch — Rushikonda Heights Phase 2
+              </div>
+              <div style={{fontSize: '11px', color: '#6B7AB5', marginTop: '1px'}}>
+                Start calling interested leads now · Target 10 bookings
+              </div>
             </div>
+            <button onClick={() => setDismissedAnn(true)}
+              style={{fontSize: '18px', background: 'none', border: 'none',
+                      cursor: 'pointer', color: '#9AA5CC', flexShrink: 0, lineHeight: 1}}>×</button>
           </div>
-          <div style={{width: '32px', height: '32px', borderRadius: '50%',
-                       background: '#E53935', display: 'flex', alignItems: 'center',
-                       justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '12px', color: 'white', fontWeight: '800'}}>3</span>
-          </div>
-        </button>
+        )}
 
-        {/* My Leads */}
-        <button style={{width: '100%', background: 'white', borderRadius: '16px', padding: '20px',
-                        border: 'none', cursor: 'pointer', marginBottom: '10px',
-                        display: 'flex', alignItems: 'center', gap: '16px',
-                        boxShadow: '0 2px 12px rgba(27,47,110,0.08)'}}>
-          <div style={{width: '56px', height: '56px', borderRadius: '16px', background: '#2E9FD4',
-                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '26px'}}>👥</span>
-          </div>
-          <div style={{flex: 1, textAlign: 'left'}}>
-            <div style={{fontSize: '16px', fontWeight: '800', color: '#1B2F6E'}}>My Leads</div>
-            <div style={{fontSize: '12px', color: '#9AA5CC', marginTop: '3px'}}>
-              28 total assigned to me
+        {/* Action Cards */}
+        <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+
+          {/* Call a Lead */}
+          <button onClick={() => router.push('/telecaller/call')}
+            style={{width: '100%', background: 'white', borderRadius: '14px', padding: '16px',
+                    border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+                    gap: '14px', boxShadow: '0 1px 8px rgba(0,0,0,0.06)'}}>
+            <div style={{width: '50px', height: '50px', borderRadius: '14px', background: '#3AAA35',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{fontSize: '24px'}}>📞</span>
             </div>
-          </div>
-          <div style={{width: '32px', height: '32px', borderRadius: '50%',
-                       background: '#2E9FD4', display: 'flex', alignItems: 'center',
-                       justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '14px', color: 'white', fontWeight: '800'}}>→</span>
-          </div>
-        </button>
-
-        {/* Attendance */}
-        <button onClick={() => router.push('/telecaller/attendance')}
-          style={{width: '100%', background: 'white', borderRadius: '16px', padding: '20px',
-                  border: 'none', cursor: 'pointer', marginBottom: '10px',
-                  display: 'flex', alignItems: 'center', gap: '16px',
-                  boxShadow: '0 2px 12px rgba(27,47,110,0.08)'}}>
-          <div style={{width: '56px', height: '56px', borderRadius: '16px', background: '#F57C00',
-                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '26px'}}>📍</span>
-          </div>
-          <div style={{flex: 1, textAlign: 'left'}}>
-            <div style={{fontSize: '16px', fontWeight: '800', color: '#1B2F6E'}}>Attendance</div>
-            <div style={{fontSize: '12px', color: '#9AA5CC', marginTop: '3px'}}>
-              Checked in · 9:14 AM · Tap to check out
+            <div style={{flex: 1, textAlign: 'left'}}>
+              <div style={{fontSize: '15px', fontWeight: '800', color: '#1B2F6E'}}>Call a Lead</div>
+              <div style={{fontSize: '11px', color: '#9AA5CC', marginTop: '2px'}}>
+                12 waiting · 4 🔴 Hot · 8 🟡 Warm
+              </div>
             </div>
-          </div>
-          <div style={{width: '32px', height: '32px', borderRadius: '50%',
-                       background: '#3AAA35', display: 'flex', alignItems: 'center',
-                       justifyContent: 'center', flexShrink: 0}}>
-            <span style={{fontSize: '10px', color: 'white', fontWeight: '800'}}>IN</span>
-          </div>
-        </button>
+            <div style={{width: '30px', height: '30px', borderRadius: '50%', background: '#3AAA35',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{color: 'white', fontSize: '14px', fontWeight: '800'}}>›</span>
+            </div>
+          </button>
 
+          {/* Follow-ups */}
+          <button onClick={() => router.push('/telecaller/followups')}
+            style={{width: '100%', background: 'white', borderRadius: '14px', padding: '16px',
+                    border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+                    gap: '14px', boxShadow: '0 1px 8px rgba(0,0,0,0.06)'}}>
+            <div style={{width: '50px', height: '50px', borderRadius: '14px', background: '#E53935',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{fontSize: '24px'}}>⏰</span>
+            </div>
+            <div style={{flex: 1, textAlign: 'left'}}>
+              <div style={{fontSize: '15px', fontWeight: '800', color: '#1B2F6E'}}>Follow-ups Due</div>
+              <div style={{fontSize: '11px', color: '#9AA5CC', marginTop: '2px'}}>
+                3 pending · 1 overdue
+              </div>
+            </div>
+            <div style={{width: '30px', height: '30px', borderRadius: '50%', background: '#E53935',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{color: 'white', fontSize: '12px', fontWeight: '800'}}>3</span>
+            </div>
+          </button>
+
+          {/* My Leads */}
+          <button onClick={() => router.push('/telecaller/call')}
+            style={{width: '100%', background: 'white', borderRadius: '14px', padding: '16px',
+                    border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+                    gap: '14px', boxShadow: '0 1px 8px rgba(0,0,0,0.06)'}}>
+            <div style={{width: '50px', height: '50px', borderRadius: '14px', background: '#1B2F6E',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{fontSize: '24px'}}>👥</span>
+            </div>
+            <div style={{flex: 1, textAlign: 'left'}}>
+              <div style={{fontSize: '15px', fontWeight: '800', color: '#1B2F6E'}}>My Leads</div>
+              <div style={{fontSize: '11px', color: '#9AA5CC', marginTop: '2px'}}>
+                28 assigned · 4 🔴 · 8 🟡 · 16 🔵
+              </div>
+            </div>
+            <div style={{width: '30px', height: '30px', borderRadius: '50%', background: '#1B2F6E',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{color: 'white', fontSize: '14px', fontWeight: '800'}}>›</span>
+            </div>
+          </button>
+
+          {/* Attendance */}
+          <button onClick={() => router.push('/telecaller/attendance')}
+            style={{width: '100%', background: 'white', borderRadius: '14px', padding: '16px',
+                    border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+                    gap: '14px', boxShadow: '0 1px 8px rgba(0,0,0,0.06)'}}>
+            <div style={{width: '50px', height: '50px', borderRadius: '14px', background: '#F57C00',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{fontSize: '24px'}}>📍</span>
+            </div>
+            <div style={{flex: 1, textAlign: 'left'}}>
+              <div style={{fontSize: '15px', fontWeight: '800', color: '#1B2F6E'}}>Attendance</div>
+              <div style={{fontSize: '11px', color: '#9AA5CC', marginTop: '2px'}}>
+                Checked in · 9:14 AM · Tap to check out
+              </div>
+            </div>
+            <div style={{width: '30px', height: '30px', borderRadius: '50%', background: '#3AAA35',
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <span style={{color: 'white', fontSize: '9px', fontWeight: '800'}}>IN</span>
+            </div>
+          </button>
+
+        </div>
       </div>
 
       {/* Bottom Nav */}
