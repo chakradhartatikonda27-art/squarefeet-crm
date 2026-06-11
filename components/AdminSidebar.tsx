@@ -10,6 +10,7 @@ export default function AdminSidebar({ active }: { active: string }) {
     { id: 'calls', label: 'Calls', icon: '📞', path: '/admin/calls' },
     { id: 'followups', label: 'Follow-ups', icon: '📅', path: '/admin/followups', badge: '3', badgeRed: true },
     { id: 'inventory', label: 'Inventory', icon: '🏗️', path: '/admin/inventory' },
+    { id: 'announcements', label: 'Announcements', icon: '📢', path: '/admin/announcements' },
     { id: 'team', label: 'Team & GPS', icon: '📍', path: '/admin/team' },
     { id: 'reports', label: 'Reports', icon: '📊', path: '/admin/reports' },
     { id: 'targets', label: 'Targets', icon: '🎯', path: '/admin/targets' },
