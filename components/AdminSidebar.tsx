@@ -10,6 +10,7 @@ export default function AdminSidebar({ active }: { active: string }) {
     { id: 'calls', label: 'Calls', icon: '📞', path: '/admin/calls' },
     { id: 'followups', label: 'Follow-ups', icon: '📅', path: '/admin/followups', badge: '3', badgeRed: true },
     { id: 'inventory', label: 'Inventory', icon: '🏗️', path: '/admin/inventory' },
+    { id: 'payments', label: 'Payments', icon: '💰', path: '/admin/payments' },
     { id: 'announcements', label: 'Announcements', icon: '📢', path: '/admin/announcements' },
     { id: 'team', label: 'Team & GPS', icon: '📍', path: '/admin/team' },
     { id: 'reports', label: 'Reports', icon: '📊', path: '/admin/reports' },
@@ -21,7 +22,6 @@ export default function AdminSidebar({ active }: { active: string }) {
   return (
     <div style={{width: '210px', background: '#0E1A3D', display: 'flex',
                  flexDirection: 'column', flexShrink: 0, minHeight: '100dvh'}}>
-      {/* Logo */}
       <div style={{padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.07)',
                    background: '#080F1E'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
@@ -49,7 +49,6 @@ export default function AdminSidebar({ active }: { active: string }) {
         </div>
       </div>
 
-      {/* Nav */}
       <div style={{flex: 1, overflowY: 'auto', padding: '8px 0'}}>
         <div style={{padding: '10px 16px 4px', fontSize: '9px', fontWeight: '700',
                      color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em'}}>MAIN</div>
@@ -93,7 +92,6 @@ export default function AdminSidebar({ active }: { active: string }) {
         ))}
       </div>
 
-      {/* User */}
       <div style={{padding: '12px 14px', borderTop: '1px solid rgba(255,255,255,0.07)',
                    background: '#080F1E', display: 'flex', alignItems: 'center', gap: '10px'}}>
         <div style={{width: '32px', height: '32px', borderRadius: '50%', background: '#3AAA35',
