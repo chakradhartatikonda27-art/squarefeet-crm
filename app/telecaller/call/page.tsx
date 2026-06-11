@@ -17,15 +17,16 @@ export default function CallScreen() {
     budget: '₹65 Lakhs',
     project: '3BHK Apartment · Gajuwaka Greens',
     source: 'Facebook Ad',
-    lastCall: 'First contact',
+    score: 'Hot',
+    calls: 0,
   };
 
   const statuses = [
-    { key: 'CONNECTED', label: 'Connected', bg: '#E8F5E8', fg: '#2D8529', border: '#3AAA35' },
-    { key: 'INTERESTED', label: 'Interested', bg: '#E3F4FB', fg: '#1565C0', border: '#2E9FD4' },
-    { key: 'BUSY', label: 'Busy / Call Back', bg: '#FFF3E0', fg: '#E65100', border: '#F57C00' },
-    { key: 'NOT_CONNECTED', label: 'Not Picked Up', bg: '#FFEBEE', fg: '#B71C1C', border: '#E53935' },
-    { key: 'NOT_INTERESTED', label: 'Not Interested', bg: '#F5F5F5', fg: '#616161', border: '#BDBDBD' },
+    { key: 'CONNECTED', label: 'Connected', bg: '#E8F5E8', fg: '#2D8529', border: '#3AAA35', icon: '✅' },
+    { key: 'INTERESTED', label: 'Interested', bg: '#E3F4FB', fg: '#1565C0', border: '#2E9FD4', icon: '🔥' },
+    { key: 'BUSY', label: 'Busy / Call Back', bg: '#FFF3E0', fg: '#E65100', border: '#F57C00', icon: '⏰' },
+    { key: 'NOT_PICKED', label: 'Not Picked Up', bg: '#FFEBEE', fg: '#B71C1C', border: '#E53935', icon: '📵' },
+    { key: 'NOT_INTERESTED', label: 'Not Interested', bg: '#F5F5F5', fg: '#616161', border: '#BDBDBD', icon: '🚫' },
   ];
 
   const followupTimes = [
@@ -37,185 +38,180 @@ export default function CallScreen() {
 
   const handleStatusSelect = (key: string) => {
     setSelectedStatus(key);
-    if (key === 'INTERESTED' || key === 'BUSY' || key === 'CONNECTED') {
-      setShowFollowup(true);
-    } else {
-      setShowFollowup(false);
-    }
-  };
-
-  const handleSave = () => {
-    router.push('/telecaller/home');
+    setShowFollowup(['INTERESTED', 'BUSY', 'CONNECTED'].includes(key));
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{background: '#F0F2F8'}}>
+    <div style={{minHeight: '100dvh', background: '#F0F2F8', display: 'flex', flexDirection: 'column'}}>
 
       {/* Header */}
-      <div className="p-4 pb-5" style={{background: '#2D8529'}}>
-        <div className="flex items-center gap-3 mb-3">
+      <div style={{background: '#1B2F6E', padding: '14px 16px 20px'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px'}}>
           <button onClick={() => router.push('/telecaller/home')}
-            className="text-white text-xl">←</button>
-          <p className="text-xs font-semibold" style={{color: 'rgba(255,255,255,0.7)'}}>
-            Next lead to call
-          </p>
+            style={{color: 'white', background: 'none', border: 'none',
+                    fontSize: '22px', cursor: 'pointer', lineHeight: 1}}>←</button>
+          <span style={{fontSize: '13px', color: 'rgba(255,255,255,0.6)'}}>Next lead to call</span>
         </div>
-        <h1 className="text-2xl font-bold text-white">{lead.name}</h1>
-        <span className="text-xs font-bold px-3 py-1 rounded-full mt-2 inline-block"
-              style={{background: '#2E9FD4', color: 'white'}}>
-          New Lead
-        </span>
+
+        {/* Lead Info */}
+        <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+          <div style={{width: '52px', height: '52px', borderRadius: '50%', background: '#2E9FD4',
+                       display: 'flex', alignItems: 'center', justifyContent: 'center',
+                       fontSize: '18px', fontWeight: '800', color: 'white', flexShrink: 0}}>
+            {lead.name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <div style={{flex: 1}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px'}}>
+              <h1 style={{fontSize: '20px', fontWeight: '800', color: 'white', margin: 0}}>
+                {lead.name}
+              </h1>
+              <span style={{fontSize: '10px', fontWeight: '700', padding: '2px 7px',
+                            borderRadius: '8px', background: '#FFEBEE', color: '#E53935'}}>
+                🔴 Hot
+              </span>
+            </div>
+            <div style={{fontSize: '12px', color: 'rgba(255,255,255,0.6)'}}>
+              {lead.area} · {lead.budget}
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="flex-1 p-4 flex flex-col gap-3">
+      <div style={{flex: 1, padding: '14px', overflowY: 'auto', paddingBottom: '80px'}}>
 
-        {/* Lead Info Card */}
-        <div className="bg-white rounded-2xl p-4"
-             style={{border: '0.5px solid #DDE2EF'}}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center text-base font-bold text-white flex-shrink-0"
-                 style={{background: '#1B2F6E'}}>
-              RK
-            </div>
-            <div>
-              <div className="text-base font-bold" style={{color: '#1B2F6E'}}>{lead.name}</div>
-              <div className="text-xs" style={{color: '#6B7AB5'}}>{lead.area}</div>
-              <div className="text-sm font-bold mt-0.5" style={{color: '#3AAA35'}}>
-                Budget: {lead.budget}
+        {/* Lead Details Card */}
+        <div style={{background: 'white', borderRadius: '14px', padding: '14px',
+                     marginBottom: '12px', border: '0.5px solid #DDE2EF'}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px'}}>
+            {[
+              {lbl: 'Mobile', val: lead.mobile},
+              {lbl: 'Budget', val: lead.budget},
+              {lbl: 'Project', val: lead.project},
+              {lbl: 'Source', val: lead.source},
+              {lbl: 'Previous calls', val: 'First contact'},
+              {lbl: 'Area', val: lead.area},
+            ].map((item, i) => (
+              <div key={i}>
+                <div style={{fontSize: '10px', color: '#9AA5CC', marginBottom: '2px'}}>{item.lbl}</div>
+                <div style={{fontSize: '12px', fontWeight: '600', color: '#1B2F6E'}}>{item.val}</div>
               </div>
-            </div>
+            ))}
           </div>
-
-          <div className="rounded-xl p-3 mb-3" style={{background: '#F7F8FC'}}>
-            <div className="text-xs font-semibold mb-1" style={{color: '#9AA5CC'}}>
-              Interested in
-            </div>
-            <div className="text-sm font-bold" style={{color: '#1B2F6E'}}>
-              {lead.project}
-            </div>
-            <div className="text-xs mt-1" style={{color: '#9AA5CC'}}>
-              Source: {lead.source}
-            </div>
-          </div>
-
-          <div className="text-xs font-semibold mb-3" style={{color: '#6B7AB5'}}>
-            Previous calls: {lead.lastCall}
-          </div>
-
-          {/* Call Button */}
-          {!callStarted ? (
-            <button
-              onClick={() => setCallStarted(true)}
-              className="w-full py-4 rounded-2xl text-base font-bold text-white flex items-center justify-center gap-3"
-              style={{background: '#3AAA35'}}>
-              <span className="text-xl">📞</span>
-              Call {lead.mobile}
-            </button>
-          ) : (
-            <div className="w-full py-4 rounded-2xl text-base font-bold text-white flex items-center justify-center gap-3"
-                 style={{background: '#1B2F6E'}}>
-              <span className="text-xl">📞</span>
-              Calling... {lead.mobile}
-            </div>
-          )}
-
-          {/* WhatsApp Button */}
-          <button className="w-full py-3 rounded-2xl text-sm font-bold mt-2 flex items-center justify-center gap-2"
-            style={{background: '#E8F5E8', color: '#2D8529', border: '1.5px solid #3AAA35'}}>
-            <span>💬</span>
-            Send WhatsApp Message
-          </button>
         </div>
 
-        {/* Status Buttons — appear after call started */}
+        {/* Call Button */}
+        {!callStarted && (
+          <button onClick={() => setCallStarted(true)}
+            style={{width: '100%', padding: '18px', borderRadius: '16px', border: 'none',
+                    background: '#3AAA35', color: 'white', fontSize: '18px', fontWeight: '800',
+                    cursor: 'pointer', marginBottom: '10px', display: 'flex',
+                    alignItems: 'center', justifyContent: 'center', gap: '10px'}}>
+            <span style={{fontSize: '24px'}}>📞</span>
+            Call {lead.mobile}
+          </button>
+        )}
+
+        {/* WhatsApp Button */}
+        {!callStarted && (
+          <button style={{width: '100%', padding: '14px', borderRadius: '14px',
+                          border: '2px solid #3AAA35', background: '#E8F5E8',
+                          color: '#2D8529', fontSize: '15px', fontWeight: '700',
+                          cursor: 'pointer', display: 'flex',
+                          alignItems: 'center', justifyContent: 'center', gap: '10px'}}>
+            <span style={{fontSize: '20px'}}>💬</span>
+            Send WhatsApp Message
+          </button>
+        )}
+
+        {/* After Call — Status Selection */}
         {callStarted && (
-          <div className="bg-white rounded-2xl p-4"
-               style={{border: '0.5px solid #DDE2EF'}}>
-            <div className="text-sm font-bold text-center mb-3" style={{color: '#1B2F6E'}}>
-              What happened on the call?
+          <div>
+            <div style={{background: '#E8EBF5', borderRadius: '12px', padding: '12px 14px',
+                         marginBottom: '12px', textAlign: 'center'}}>
+              <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E'}}>
+                📞 Call in progress with {lead.name}
+              </div>
+              <div style={{fontSize: '11px', color: '#6B7AB5', marginTop: '3px'}}>
+                Select outcome after the call ends
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-2">
-              {statuses.map(s => (
-                <button key={s.key}
-                  onClick={() => handleStatusSelect(s.key)}
-                  className="py-3 px-2 rounded-xl text-sm font-bold border-2 transition-all"
-                  style={{
-                    background: selectedStatus === s.key ? s.fg : s.bg,
-                    color: selectedStatus === s.key ? 'white' : s.fg,
-                    borderColor: s.border,
-                  }}>
-                  {s.label}
+
+            {/* Status Buttons */}
+            <div style={{fontSize: '12px', fontWeight: '700', color: '#6B7AB5',
+                         marginBottom: '8px'}}>What happened on this call?</div>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px',
+                         marginBottom: '12px'}}>
+              {statuses.map(status => (
+                <button key={status.key}
+                  onClick={() => handleStatusSelect(status.key)}
+                  style={{padding: '14px 10px', borderRadius: '12px',
+                          border: `2px solid ${selectedStatus === status.key ? status.border : '#DDE2EF'}`,
+                          background: selectedStatus === status.key ? status.bg : 'white',
+                          cursor: 'pointer', textAlign: 'center',
+                          transform: selectedStatus === status.key ? 'scale(1.02)' : 'scale(1)'}}>
+                  <div style={{fontSize: '20px', marginBottom: '4px'}}>{status.icon}</div>
+                  <div style={{fontSize: '12px', fontWeight: '700',
+                               color: selectedStatus === status.key ? status.fg : '#1B2F6E'}}>
+                    {status.label}
+                  </div>
                 </button>
               ))}
             </div>
 
             {/* Notes */}
             {selectedStatus && (
-              <div className="mt-3">
-                <label className="text-xs font-semibold block mb-1"
-                       style={{color: '#6B7AB5'}}>
-                  Call notes (optional)
-                </label>
-                <textarea
-                  value={notes}
-                  onChange={e => setNotes(e.target.value)}
-                  placeholder="What was discussed..."
-                  rows={2}
-                  className="w-full px-3 py-2 rounded-xl text-sm border outline-none resize-none"
-                  style={{borderColor: '#DDE2EF', color: '#1A1A2E'}}
-                />
+              <div style={{marginBottom: '12px'}}>
+                <div style={{fontSize: '12px', fontWeight: '700', color: '#6B7AB5', marginBottom: '6px'}}>
+                  Add notes (optional)
+                </div>
+                <textarea value={notes} onChange={e => setNotes(e.target.value)}
+                  placeholder="What did the customer say? Any special requirements?"
+                  rows={3}
+                  style={{width: '100%', padding: '12px', borderRadius: '10px',
+                          border: '1.5px solid #DDE2EF', fontSize: '13px',
+                          color: '#1A1A2E', outline: 'none', resize: 'none',
+                          boxSizing: 'border-box', background: 'white'}}/>
               </div>
+            )}
+
+            {/* Follow-up Scheduler */}
+            {showFollowup && (
+              <div style={{background: '#E8EBF5', borderRadius: '12px', padding: '14px',
+                           marginBottom: '12px'}}>
+                <div style={{fontSize: '13px', fontWeight: '700', color: '#1B2F6E', marginBottom: '10px'}}>
+                  📅 Schedule Follow-up
+                </div>
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px'}}>
+                  {followupTimes.map(time => (
+                    <button key={time} onClick={() => setSelectedTime(time)}
+                      style={{padding: '10px', borderRadius: '10px', fontSize: '12px',
+                              fontWeight: '600', cursor: 'pointer',
+                              border: `1.5px solid ${selectedTime === time ? '#1B2F6E' : '#DDE2EF'}`,
+                              background: selectedTime === time ? '#1B2F6E' : 'white',
+                              color: selectedTime === time ? 'white' : '#6B7AB5'}}>
+                      {time}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Save Button */}
+            {selectedStatus && (
+              <button onClick={() => router.push('/telecaller/home')}
+                style={{width: '100%', padding: '16px', borderRadius: '14px', border: 'none',
+                        background: '#1B2F6E', color: 'white', fontSize: '16px',
+                        fontWeight: '700', cursor: 'pointer'}}>
+                ✅ Save & Next Lead →
+              </button>
             )}
           </div>
         )}
-
-        {/* Follow-up Scheduler */}
-        {showFollowup && (
-          <div className="bg-white rounded-2xl p-4"
-               style={{border: '0.5px solid #DDE2EF', borderLeftWidth: 4, borderLeftColor: '#1B2F6E'}}>
-            <div className="text-sm font-bold mb-3" style={{color: '#1B2F6E'}}>
-              Schedule follow-up call
-            </div>
-            <div className="grid grid-cols-2 gap-2 mb-3">
-              {followupTimes.map(time => (
-                <button key={time}
-                  onClick={() => setSelectedTime(time)}
-                  className="py-3 px-2 rounded-xl text-sm font-semibold border-2 transition-all"
-                  style={{
-                    background: selectedTime === time ? '#E8EBF5' : 'white',
-                    color: selectedTime === time ? '#1B2F6E' : '#6B7AB5',
-                    borderColor: selectedTime === time ? '#1B2F6E' : '#DDE2EF',
-                  }}>
-                  {time}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={handleSave}
-              disabled={!selectedStatus}
-              className="w-full py-4 rounded-2xl text-base font-bold text-white"
-              style={{background: selectedStatus ? '#1B2F6E' : '#9AA5CC'}}>
-              Save & Next Lead →
-            </button>
-          </div>
-        )}
-
-        {/* Save without followup */}
-        {callStarted && selectedStatus && !showFollowup && (
-          <button
-            onClick={handleSave}
-            className="w-full py-4 rounded-2xl text-base font-bold text-white"
-            style={{background: '#1B2F6E'}}>
-            Save & Next Lead →
-          </button>
-        )}
-
       </div>
 
       {/* Bottom Nav */}
-      <div className="grid grid-cols-4 border-t"
-           style={{background: 'white', borderColor: '#DDE2EF'}}>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+                   background: 'white', borderTop: '1px solid #DDE2EF'}}>
         {[
           {icon: '🏠', label: 'Home', path: '/telecaller/home'},
           {icon: '📞', label: 'Call', path: '/telecaller/call', active: true},
@@ -223,14 +219,14 @@ export default function CallScreen() {
           {icon: '📍', label: 'Attendance', path: '/telecaller/attendance'},
         ].map((item, i) => (
           <button key={i} onClick={() => router.push(item.path)}
-            className="flex flex-col items-center py-3 gap-1 text-xs font-semibold"
-            style={{color: item.active ? '#1B2F6E' : '#9AA5CC'}}>
-            <span className="text-xl">{item.icon}</span>
-            {item.label}
+            style={{display: 'flex', flexDirection: 'column', alignItems: 'center',
+                    padding: '10px 4px', gap: '3px', fontSize: '10px', fontWeight: '600',
+                    color: item.active ? '#1B2F6E' : '#9AA5CC',
+                    background: 'none', border: 'none', cursor: 'pointer'}}>
+            <span style={{fontSize: '20px'}}>{item.icon}</span>{item.label}
           </button>
         ))}
       </div>
-
     </div>
   );
 }
