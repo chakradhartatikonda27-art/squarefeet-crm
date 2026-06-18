@@ -5,6 +5,13 @@ import { useRouter } from 'next/navigation';
 export default function TeamLeaderDashboard() {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
+  const [dismissedAnn, setDismissedAnn] = useState(false);
+
+  const announcement = {
+    title: 'Monthly Target Update — June 2026',
+    message: 'Each telecaller must complete 300 calls and 3 conversions this month.',
+    type: 'Target', typeColor: '#1B2F6E', typeBg: '#E8EBF5', icon: '🎯',
+  };
 
   const team = [
     { initials: 'AR', name: 'Arjun R.', role: 'Telecaller', calls: 22, score: 90, color: '#3AAA35', status: 'Active', overdue: 0 },
@@ -14,10 +21,10 @@ export default function TeamLeaderDashboard() {
   ];
 
   const alerts = [
-    { type: 'overdue', text: 'Rohit K. has 3 overdue follow-ups', color: '#E53935', bg: '#FFEBEE' },
-    { type: 'overdue', text: 'Priya S. has 2 overdue follow-ups', color: '#E53935', bg: '#FFEBEE' },
-    { type: 'absent', text: 'Rohit K. has not checked in today', color: '#F57C00', bg: '#FFF3E0' },
-    { type: 'low', text: 'Kiran M. is below 50% productivity', color: '#F57C00', bg: '#FFF3E0' },
+    { text: 'Rohit K. has 3 overdue follow-ups', color: '#E53935', bg: '#FFEBEE' },
+    { text: 'Priya S. has 2 overdue follow-ups', color: '#E53935', bg: '#FFEBEE' },
+    { text: 'Rohit K. has not checked in today', color: '#F57C00', bg: '#FFF3E0' },
+    { text: 'Kiran M. is below 50% productivity', color: '#F57C00', bg: '#FFF3E0' },
   ];
 
   return (
@@ -40,11 +47,8 @@ export default function TeamLeaderDashboard() {
             style={{width: '36px', height: '36px', borderRadius: '50%',
                     background: 'rgba(255,255,255,0.15)', border: 'none',
                     color: 'white', fontSize: '18px', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            ⋮
-          </button>
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'}}>⋮</button>
         </div>
-
         {showMenu && (
           <div style={{position: 'absolute', top: '60px', right: '16px', background: 'white',
                        borderRadius: '12px', padding: '8px', zIndex: 100, minWidth: '160px',
@@ -52,9 +56,7 @@ export default function TeamLeaderDashboard() {
             <button onClick={() => { setShowMenu(false); router.push('/'); }}
               style={{width: '100%', padding: '10px 14px', borderRadius: '8px', border: 'none',
                       background: 'none', textAlign: 'left', fontSize: '13px', fontWeight: '600',
-                      color: '#E53935', cursor: 'pointer'}}>
-              🚪 Logout
-            </button>
+                      color: '#E53935', cursor: 'pointer'}}>🚪 Logout</button>
           </div>
         )}
       </div>
@@ -77,6 +79,29 @@ export default function TeamLeaderDashboard() {
       </div>
 
       <div style={{flex: 1, padding: '14px', overflowY: 'auto', paddingBottom: '80px'}}>
+
+        {/* Announcement */}
+        {!dismissedAnn && (
+          <div style={{background: announcement.typeBg, borderRadius: '12px', padding: '12px',
+                       marginBottom: '12px', border: `1.5px solid ${announcement.typeColor}`,
+                       display: 'flex', gap: '10px', alignItems: 'flex-start'}}>
+            <span style={{fontSize: '20px', flexShrink: 0}}>{announcement.icon}</span>
+            <div style={{flex: 1}}>
+              <div style={{display: 'flex', gap: '6px', marginBottom: '3px', alignItems: 'center'}}>
+                <span style={{fontSize: '10px', fontWeight: '700', padding: '2px 7px',
+                              borderRadius: '8px', background: announcement.typeColor, color: 'white'}}>
+                  {announcement.type}
+                </span>
+                <span style={{fontSize: '10px', color: '#9AA5CC'}}>From Admin</span>
+              </div>
+              <div style={{fontSize: '12px', fontWeight: '700', color: '#1B2F6E'}}>{announcement.title}</div>
+              <div style={{fontSize: '11px', color: '#6B7AB5', marginTop: '2px'}}>{announcement.message}</div>
+            </div>
+            <button onClick={() => setDismissedAnn(true)}
+              style={{fontSize: '16px', background: 'none', border: 'none',
+                      cursor: 'pointer', color: '#9AA5CC', flexShrink: 0}}>×</button>
+          </div>
+        )}
 
         {/* Alerts */}
         <div style={{background: 'white', borderRadius: '14px', overflow: 'hidden',
@@ -109,9 +134,7 @@ export default function TeamLeaderDashboard() {
             </div>
             <button onClick={() => router.push('/teamleader/team')}
               style={{fontSize: '12px', fontWeight: '600', color: '#2E9FD4',
-                      background: 'none', border: 'none', cursor: 'pointer'}}>
-              Details →
-            </button>
+                      background: 'none', border: 'none', cursor: 'pointer'}}>Details →</button>
           </div>
           {team.map((member, i) => (
             <div key={i} style={{display: 'flex', alignItems: 'center', gap: '10px',
@@ -181,7 +204,6 @@ export default function TeamLeaderDashboard() {
             </button>
           </div>
         </div>
-
       </div>
 
       {/* Bottom Nav */}
